@@ -22,11 +22,14 @@ namespace Demo.BotFramework.BotApplication
 		{
 			if (message.Type == "Message")
 			{
-				// calculate something for us to return
-				int length = (message.Text ?? string.Empty).Length;
+				var counter = message.GetBotPerUserInConversationData<int>("counter");
 
 				// return our reply to the user
-				return message.CreateReplyMessage($"You sent {length} characters");
+				Message replyMessage = message.CreateReplyMessage($"{++counter} You said: {message.Text}");
+
+				replyMessage.SetBotPerUserInConversationData("counter", counter);
+
+				return replyMessage;
 			}
 			else
 			{
